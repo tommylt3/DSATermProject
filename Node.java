@@ -4,15 +4,15 @@ import java.util.Map;
 
 // Node helper class for the Radix tree data structure 
 public class Node {
-   private char letter;
+   private String letter;
    private boolean isWord;
    int weight;
    Map<String,Node> children = new HashMap<>();
-   Node(char letter,int weight) {
+   Node(String letter,int weight) {
       this.letter = letter;
       this.weight = weight;  
    }
-   public char getLetter() {
+   public String getLetter() {
       return this.letter;
    }
    public int getWeight() {
@@ -25,6 +25,12 @@ public class Node {
       return this.children;
    }
    public ArrayList listChild() {
-      return
+      ArrayList<Node> childList = new ArrayList<>();
+      for(String word : this.children.keySet()) {
+         Node child = this.children.get(word);
+         ArrayList<Node>
+      }
+      
+      return childList;
    }
 }
