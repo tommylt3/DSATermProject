@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import com.google.gson.Gson;
+
 public class Dictionary { 
 	// variable declaration 
 	private HashMap<String,Integer> dictionary = new HashMap<String,Integer>();
@@ -50,29 +52,6 @@ public class Dictionary {
          maxCountWord = input;
       }
     }
-   // Reads from JSON file and creates a new dictionary 
-   public Dictionary updateFromJSON(String file) throws FileNotFoundException {
-      System.out.println("Pending update from : " + file);
-      // String is created to store the input file, this is later used to create the new dictionary object 
-      StringBuilder jsonCopy = new StringBuilder();
-      Scanner sc = new Scanner(new File(file));
-      // Reads the input file 
-      if(!sc.hasNext()) {
-    	  System.out.println("Empty Input File - new object created");
-    	  return new Dictionary();
-    	  
-      }
-      while(sc.hasNext()) {
-         jsonCopy.append(sc.nextLine());
-      }
-      // Creates the gson object to create dictionary object using the json file that was the input
-      // Gson gson = new Gson(); // ! This Line is Broken
-      System.out.println("Update Complete from : " + file);
-      // return gson.fromJson(jsonCopy.toString(), Dictionary.class);  // ! This Line is Broken
-      return null; // Just So There Are No Errors
-   }
-   
-   
    // Dictionary to text file 
    public void toTextFile(String fileName) throws IOException {
 	   FileWriter writer = new FileWriter(fileName);
