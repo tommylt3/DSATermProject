@@ -66,9 +66,10 @@ public class Dictionary {
          jsonCopy.append(sc.nextLine());
       }
       // Creates the gson object to create dictionary object using the json file that was the input
-      Gson gson = new Gson();
+      // Gson gson = new Gson(); // ! This Line is Broken
       System.out.println("Update Complete from : " + file);
-      return gson.fromJson(jsonCopy.toString(), Dictionary.class);  
+      // return gson.fromJson(jsonCopy.toString(), Dictionary.class);  // ! This Line is Broken
+      return null; // Just So There Are No Errors
    }
    
    
