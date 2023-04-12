@@ -13,6 +13,7 @@ public class Node {
    Node(String letter,int weight) {
       this.letter = letter;
       this.weight = weight;  
+      this.isWord = false;
    }
    
    // Getter for the letter of this node 
@@ -37,6 +38,10 @@ public class Node {
    // Getter for the boolean of if the node is a word / end of this node 
    public boolean isWord() {
       return this.isWord;
+   }
+   // Setter for boolean of if the node is a word
+   public void setWord(Boolean in) {
+      this.isWord = in;
    }
    
    // Getter for the children of this node 
