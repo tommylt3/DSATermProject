@@ -34,31 +34,57 @@ public class RadixTree {
     /* unfinished function to add a given string to the radix tree */
     public void addWord (Node parent, String subword, int freq) {
         // Should add check that string is long enough
-        
-        int index = calcIndex(subword.charAt(0));
 
-        // if there is no child with the letter, add it
-        if (root.children[index] == null) {
-            root.children[index] = new Node(subword, true, freq);
-        } else if (!subword.equals(root.children[index].subword)) { // if there is a child but they aren't equal because the compressed word doesn't match
-            // need to add part to deal with edge case if root is a prefix of the subword, ex: free and freedom
-            
-            // find first character that doesn't match
-            int i = 0;
-            while (subword.charAt(i) == root.children[index].subword.charAt(i)){
-                i++;
-            }
+        int index = calcIndex(subword.charAt(0));   // converts first character to index in array of children
+        Node current = parent.children[index];        // node currently in index where the subword belongs
 
-            // split the root 
-            root_substring = root.children[index].subString(i, root.children[index].length());
-            Node new_child = new Node (root_substring, root.isEnd, root.freq, root.children);
-            root.isEnd = false;
-            root.children = new Node[36];
-            root.children[calcIndex(root_substring.charAt(0))];
-            addWord (root, subword, freq);  // call function again, now that the root is split, it should work
+        if (current == null) {    // if there is no word in the spot, place the subword there
+            parent.children[index] = new Node(subword, true, freq);
         } else {
-            addWord (root.children[index], subword.subString(1, subword.length()), freq);   // if matches, call on corresponding child spot
+            String prefix = current.word;     // word that is currently in the spot
+
+            // if the subword is smaller than the prefix and is actually the prefix of 'prefix'. e.g. prefix = freedom and subword = free
+            if (prefix.length() > subword.length() && subword.equals(prefix.subString(0, subword.length()))) {      
+                Node new_parent = new Node (subword, true, freq, new Node[36]);
+                current.word = prefix.subString(subword.length(), prefix.length());
+                new_parent.children[calcIndex(current.word.charAt(0))] = current;
+                parent.children[index] = new_parent;
+
+                // if the prefix is actually the prefix for subword, e.g. prefix = free and subword = freedom, call addWord on the suffix portion of the subword (in the example this would be "dom")
+            } else if (prefix.length() < subword.length() && prefix.equals(subword.subString(0, prefix.length()))) {    
+                addWord (current, subword.subString(1, prefix.length()), freq);
+            
+            // if there is a child but they aren't equal because the compressed word doesn't match. e.g. freedom and fire, 
+            } else {
+                // find first character that doesn't match
+                int i = 0;
+                while (subword.charAt(i) == prefix.charAt(i) && i < prefix.length()){
+                    i++;
+                }
+
+                // split the parent
+                /*
+                Example: prefix = freedom and subword = fire, i = 1
+                prefix will become "f" and the only child of prefix (current) will be "reedom", the "reedom" node (new_child) will
+                take all of prefixes' children at its own, then we will call addWord on the current with the substring "ire"
+                */
+                Node new_child = new Node (prefix.subString(i, prefix.length()), current.isEnd, current.freq, current.children);   // create new node, taking on current's children
+                current.isEnd = false;    // since new_child is taking the end of current's word, current cannot be a word ending
+                current.children = new Node[36];    // create empty list of children
+                current.children[calcIndex(new_child.word.charAt(0))] = new_child;  // list new_child as current's child
+                current.word = prefix.subString(0, i);      // remove part of current's word that is in new_child
+                addWord (current, subword.subString(i, subword.length()), freq);  // call function on substring, exlcuding portion of string that current holds
+            }
         }
+        /*
+        cases to consider:
+        ---------------------
+        prefix      subword
+        freedom     fire
+        fire        freedom
+        free        freedom
+        freedom     free
+        */
     }
 
     /*
