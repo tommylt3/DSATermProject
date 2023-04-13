@@ -44,15 +44,15 @@ public class RadixTree {
             String prefix = current.word;     // word that is currently in the spot
 
             // if the subword is smaller than the prefix and is actually the prefix of 'prefix'. e.g. prefix = freedom and subword = free
-            if (prefix.length() > subword.length() && subword.equals(prefix.subString(0, subword.length()))) {      
+            if (prefix.length() > subword.length() && subword.equals(prefix.substring(0, subword.length()))) {      
                 Node new_parent = new Node (subword, true, freq, new Node[36]);
-                current.word = prefix.subString(subword.length(), prefix.length());
+                current.word = prefix.substring(subword.length(), prefix.length());
                 new_parent.children[calcIndex(current.word.charAt(0))] = current;
                 parent.children[index] = new_parent;
 
                 // if the prefix is actually the prefix for subword, e.g. prefix = free and subword = freedom, call addWord on the suffix portion of the subword (in the example this would be "dom")
-            } else if (prefix.length() < subword.length() && prefix.equals(subword.subString(0, prefix.length()))) {    
-                addWord (current, subword.subString(1, prefix.length()), freq);
+            } else if (prefix.length() < subword.length() && prefix.equals(subword.substring(0, prefix.length()))) {    
+                addWord (current, subword.substring(1, prefix.length()), freq);
             
             // if there is a child but they aren't equal because the compressed word doesn't match. e.g. freedom and fire, 
             } else {
@@ -68,12 +68,12 @@ public class RadixTree {
                 prefix will become "f" and the only child of prefix (current) will be "reedom", the "reedom" node (new_child) will
                 take all of prefixes' children at its own, then we will call addWord on the current with the substring "ire"
                 */
-                Node new_child = new Node (prefix.subString(i, prefix.length()), current.isEnd, current.freq, current.children);   // create new node, taking on current's children
+                Node new_child = new Node (prefix.substring(i, prefix.length()), current.isEnd, current.freq, current.children);   // create new node, taking on current's children
                 current.isEnd = false;    // since new_child is taking the end of current's word, current cannot be a word ending
                 current.children = new Node[36];    // create empty list of children
                 current.children[calcIndex(new_child.word.charAt(0))] = new_child;  // list new_child as current's child
-                current.word = prefix.subString(0, i);      // remove part of current's word that is in new_child
-                addWord (current, subword.subString(i, subword.length()), freq);  // call function on substring, exlcuding portion of string that current holds
+                current.word = prefix.substring(0, i);      // remove part of current's word that is in new_child
+                addWord (current, subword.substring(i, subword.length()), freq);  // call function on substring, exlcuding portion of string that current holds
             }
         }
         /*
@@ -100,7 +100,7 @@ public class RadixTree {
 
     // calculates index that character corresponds to
     public int calcIndex (char c) {
-        int index = c.charValue();
+        int index = c;
         if (index > 96) // lowercase letter
             return index - 87;
         else            // number
