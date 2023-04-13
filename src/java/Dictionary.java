@@ -14,9 +14,8 @@ public class Dictionary {
    	private int maxCount = 0;
    	private int uniqueWordCount = 0;
    	private String maxCountWord = null;
-   	public Dictionary(){
+   	public Dictionary(){}
       
-   }
    // prints the dictionary
    public void printDictionary() {
 	  System.out.println("Words Counted: " + wordCount);

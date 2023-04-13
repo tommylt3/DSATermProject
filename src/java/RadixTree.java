@@ -35,30 +35,30 @@ public class RadixTree {
     public void addWord (Node parent, String subword, int freq) {
         // Should add check that string is long enough
         
-        String child = root.children[calcIndex(subword.charAt(0))];
-        String prefix = child.word;
+        int index = calcIndex(subword.charAt(0));
 
         // if there is no child with the letter, add it
-        if (prefix == null) {
-            prefix = new Node(subword, true, freq);
-        } else if (!prefix.equals(subword.subString(0, prefix.length()))) {     // if the prefix is the prefix for subword, call to add the suffix portion as a child
-            addWord (child, subword.subString(1, prefix.length()), freq);
-        } else { // if there is a child but they aren't equal because the compressed word doesn't match. e.g. fire and free
+        if (root.children[index] == null) {
+            root.children[index] = new Node(subword, true, freq);
+        } else if (!subword.equals(root.children[index].subword)) { // if there is a child but they aren't equal because the compressed word doesn't match
+            // need to add part to deal with edge case if root is a prefix of the subword, ex: free and freedom
+            
             // find first character that doesn't match
             int i = 0;
-            while (subword.charAt(i) == prefix.subword.charAt(i)){
+            while (subword.charAt(i) == root.children[index].subword.charAt(i)){
                 i++;
             }
 
             // split the root 
-            root_substring = prefix.subString(i, prefix.length());
+            root_substring = root.children[index].subString(i, root.children[index].length());
             Node new_child = new Node (root_substring, root.isEnd, root.freq, root.children);
             root.isEnd = false;
             root.children = new Node[36];
             root.children[calcIndex(root_substring.charAt(0))];
             addWord (root, subword, freq);  // call function again, now that the root is split, it should work
+        } else {
+            addWord (root.children[index], subword.subString(1, subword.length()), freq);   // if matches, call on corresponding child spot
         }
-        // need to deal with edge case if prefix is freedom and subword is free
     }
 
     /*
