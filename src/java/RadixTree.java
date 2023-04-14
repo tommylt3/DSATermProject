@@ -12,29 +12,13 @@
 */
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Comparator;
+
 
 public class RadixTree {
-    // Used to test the addword function
-    /*
-    public static void main (String args[]) {
-        addWord(root, "fire", 5);
-        addWord(root, "freedom", 7);
-        addWord(root, "lucky", 4);
-        printTree();
-
-        /*
-        cases to consider:
-        ---------------------
-        prefix      subword
-        freedom     fire
-        fire        freedom
-        free        freedom 
-        freedom     free
-        /
-    }
-    */
     
-    
+    /**/
     public static class Node {
         String word;        // portion of word or letter stored in node
         int freq;           // word frequency, frew > 0 indicates a word end
@@ -48,7 +32,6 @@ public class RadixTree {
     }
 
     Node root = new Node ("", 0, new Node[36]);  // 26 lower case letters + 10 numerical digits
-
     RadixTree () {} // constructor for radix tree
 
     /* unfinished function to add a given string to the radix tree */
@@ -97,11 +80,50 @@ public class RadixTree {
         }
     }
 
-    /*
-    public String[]  prefixMatch (String prefix) {
-
+    public Node findNode (char c, Node parent) {
+        int index = calcIndex(c);
+        return parent.children[index];
     }
-    */
+
+    public String[] prefixMatch (Node parent, String prefix) {
+        ArrayList<Pair> answers = new ArrayList<Pair>();
+        if (parent.freq > 0) {
+            answers.add(new Pair (parent.freq, prefix + parent.word));
+        }
+        dfs (parent, prefix + parent.word, answers);
+
+        answers.sort(new comparatorPair());
+        String[] sortedWords = new String[answers.size()];
+        for (int i = 0; i < answers.size(); i++) {
+            sortedWords[i] = answers.get(i).word;
+        }
+        return sortedWords;
+    }
+
+    public void dfs (Node parent, String prefix, ArrayList<Pair> answers) {
+        for (int i = parent.children.length - 1; i >= 0; i--) {
+            if (parent.children[i] != null) {
+                if (parent.children[i].freq > 0) {
+                    answers.add(new Pair (parent.children[i].freq, prefix + parent.children[i].word));
+                } 
+                dfs (parent.children[i], prefix + parent.children[i].word, answers);
+            }
+        }
+    }
+
+    public static class comparatorPair implements Comparator<Pair> {
+        public int compare (Pair x, Pair y) {
+            return Integer.compare(x.freq, y.freq);
+        }
+    }
+
+    public static class Pair {
+        int freq;
+        String word;
+
+        Pair (int f, String w) {freq = f; word = w;}
+    }
+    
     
     /*
     Needed function: Return all words with the given prefix in an array, sorted by frequency. Since the frequency does
@@ -116,12 +138,12 @@ public class RadixTree {
 
     /* For testing, prints radix tree using breadth-first search */
     public void printTree () {
-        ArrayDeque<Node> queue= new ArrayDeque<Node>();
+        ArrayDeque<Node> queue = new ArrayDeque<Node>();
         queue.addLast(root);
         while (queue.size() > 0) {
             Node k = queue.removeFirst();
             System.out.printf("\"%s\" contains:", k.word);
-            if (k.children != null) {
+            if (k.children != null) {           // may be able to remove this if statement, it should never be null
                 for (int i = 0; i < k.children.length; i++) {
                     if (k.children[i] != null) {
                         System.out.printf(" \"%s\"", k.children[i].word);
