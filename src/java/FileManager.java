@@ -29,7 +29,7 @@ public class FileManager {
       public file(String pathName){
          String currentDir = System.getProperty("user.dir");
          this.pathName = pathName;
-         this.filePath = currentDir + "/src/data/" + pathName + ".txt";
+         this.filePath = currentDir + "/src/data/" + pathName;
       }
    }
    // End Of Nested Node Class
