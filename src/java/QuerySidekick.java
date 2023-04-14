@@ -1,3 +1,6 @@
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
 /*
 
   Authors (group members):
@@ -15,31 +18,26 @@
 
 public class QuerySidekick
 {
-    String[] guesses = new String[5];  // 5 guesses from QuerySidekick
-
-    // initialization of ...
-    public QuerySidekick()
-    {
-
-    }
+   String[] guesses = new String[5];  // 5 guesses from QuerySidekick
+   RadixTree radTree = new RadixTree();
+   public QuerySidekick(){}
 
     // process old queries from oldQueryFile
     //
     // to remove extra spaces with one space
     // str2 = str1.replaceAll("\\s+", " ");
-    public void processOldQueries(String oldQueryFile)
-    {
-     
-    }
+   public void processOldQueries(String oldQueryFile) throws FileNotFoundException{
+      FileManager aFile = new FileManager(oldQueryFile);
+      ArrayList<String> aFileContents = aFile.readFile();
+   }
 
     // based on a character typed in by the user, return 5 query guesses in an array
     // currChar: current character typed in by the user
     // currCharPosition: position of the current character in the query, starts from 0
-    public String[] guess(char currChar, int currCharPosition)
-    {
+   public String[] guess(char currChar, int currCharPosition){
 	
-        return guesses;
-    }
+      return guesses;
+   }
 
     // feedback on the 5 guesses from the user
     // isCorrectGuess: true if one of the guesses is correct
@@ -54,9 +52,8 @@ public class QuerySidekick
     // a.         true                correct query
     // b.         false               null
     // c.         false               correct query
-    public void feedback(boolean isCorrectGuess, String correctQuery)        
-    {
+   public void feedback(boolean isCorrectGuess, String correctQuery){
 
-    }
+   }
 
 }
