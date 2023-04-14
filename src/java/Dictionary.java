@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import com.google.gson.Gson;
-
 public class Dictionary { 
 	// variable declaration 
 	private HashMap<String,Integer> dictionary = new HashMap<String,Integer>();
