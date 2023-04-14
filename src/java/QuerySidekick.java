@@ -20,6 +20,7 @@ public class QuerySidekick
 {
    String[] guesses = new String[5];  // 5 guesses from QuerySidekick
    RadixTree radTree = new RadixTree();
+   Dictionary dict = new Dictionary();
    public QuerySidekick(){}
 
     // process old queries from oldQueryFile
@@ -29,6 +30,9 @@ public class QuerySidekick
    public void processOldQueries(String oldQueryFile) throws FileNotFoundException{
       FileManager aFile = new FileManager(oldQueryFile);
       ArrayList<String> aFileContents = aFile.readFile();
+      for (String word : aFileContents) {
+         radTree.addWord(radTree.root , word, 1);
+      }
    }
 
     // based on a character typed in by the user, return 5 query guesses in an array
