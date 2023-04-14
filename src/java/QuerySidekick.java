@@ -30,6 +30,7 @@ public class QuerySidekick
    public void processOldQueries(String oldQueryFile) throws FileNotFoundException{
       FileManager aFile = new FileManager(oldQueryFile);
       ArrayList<String> aFileContents = aFile.readFile();
+      // Fix This, Split ArrayList Into Word
       for (String word : aFileContents) {
          radTree.addWord(radTree.root , word, 1);
       }
