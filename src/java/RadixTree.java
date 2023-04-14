@@ -14,9 +14,10 @@
 import java.util.ArrayDeque;
 
 public class RadixTree {
-    /* // Used to test the addword function
+    // Used to test the addword function
+    /*
     public static void main (String args[]) {
-        addWord(root, "free", 5);
+        addWord(root, "fire", 5);
         addWord(root, "freedom", 7);
         addWord(root, "lucky", 4);
         printTree();
@@ -33,23 +34,20 @@ public class RadixTree {
     }
     */
     
+    
     public static class Node {
         String word;        // portion of word or letter stored in node
-        boolean isEnd;      // is node the end of a word?
-        int freq;           // word frequency
+        int freq;           // word frequency, frew > 0 indicates a word end
         Node[] children;    // children of node
 
-        Node (String w, boolean b, int f, Node[] c) {
+        Node (String w, int f, Node[] c) {
             word = w;
-            isEnd = b;
             freq = f;
             children = c;
         }
-
-        Node (String w, boolean b, int f) {this(w, b, f, null);}
     }
 
-    Node root = new Node ("", false, 0, new Node[36]);  // 26 lower case letters + 10 numerical digits
+    Node root = new Node ("", 0, new Node[36]);  // 26 lower case letters + 10 numerical digits
 
     RadixTree () {} // constructor for radix tree
 
@@ -60,13 +58,13 @@ public class RadixTree {
         Node current = parent.children[index];        // node currently in index where the subword belongs
 
         if (current == null) {    // if there is no word in the spot, place the subword there
-            parent.children[index] = new Node(subword, true, freq, new Node[36]);
+            parent.children[index] = new Node(subword, freq, new Node[36]);
         } else {
             String prefix = current.word;     // word that is currently in the spot
 
             // if the subword is smaller than the prefix and is actually the prefix of 'prefix'. e.g. prefix = freedom and subword = free
             if (prefix.length() > subword.length() && subword.equals(prefix.substring(0, subword.length()))) {      
-                Node new_parent = new Node (subword, true, freq, new Node[36]);
+                Node new_parent = new Node (subword, freq, new Node[36]);
                 current.word = prefix.substring(subword.length(), prefix.length());
                 new_parent.children[calcIndex(current.word.charAt(0))] = current;
                 parent.children[index] = new_parent;
@@ -89,8 +87,8 @@ public class RadixTree {
                 prefix will become "f" and the only child of prefix (current) will be "reedom", the "reedom" node (new_child) will
                 take all of prefixes' children at its own, then we will call addWord with the substring "ire"
                 */
-                Node new_child = new Node (prefix.substring(i, prefix.length()), current.isEnd, current.freq, current.children);   // create new node, taking on current's children
-                current.isEnd = false;    // since new_child is taking the end of current's word, current cannot be a word ending
+                Node new_child = new Node (prefix.substring(i, prefix.length()), current.freq, current.children);   // create new node, taking on current's children
+                current.freq = 0;   // since new_child is taking the end of current's word, current cannot be a word ending
                 current.children = new Node[36];    // create empty list of children
                 current.children[calcIndex(new_child.word.charAt(0))] = new_child;  // list new_child as current's child
                 current.word = prefix.substring(0, i);      // remove part of current's word that is in new_child
@@ -99,7 +97,24 @@ public class RadixTree {
         }
     }
 
-    /* For program testing, prints radix tree using breadth-first search */
+    /*
+    public String[]  prefixMatch (String prefix) {
+
+    }
+    */
+    
+    /*
+    Needed function: Return all words with the given prefix in an array, sorted by frequency. Since the frequency does
+    not need to be returned, only a String[] needs to be returned.
+    Possible way to do this: traverse the tree to the last node that matches, then us something like
+    depth first search to get all the words. 
+
+    public String[] prefixMatch (String prefix) {
+
+    }
+    */
+
+    /* For testing, prints radix tree using breadth-first search */
     public void printTree () {
         ArrayDeque<Node> queue= new ArrayDeque<Node>();
         queue.addLast(root);
@@ -117,17 +132,6 @@ public class RadixTree {
             System.out.printf("%n");
         }
     }
-
-    /*
-    Needed function: Return all words with the given prefix in an array, sorted by frequency. Since the frequency does
-    not need to be returned, only a String[] needs to be returned.
-    Possible way to do this: traverse the tree to the last node that matches, then us something like
-    depth first search to get all the words. 
-
-    public String[] prefixMatch (String prefix) {
-
-    }
-    */
 
     // calculates index that character corresponds to
     public static int calcIndex (char c) {
