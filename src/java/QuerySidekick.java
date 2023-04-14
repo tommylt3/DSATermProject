@@ -20,7 +20,6 @@ public class QuerySidekick
 {
    String[] guesses = new String[5];  // 5 guesses from QuerySidekick
    RadixTree radTree = new RadixTree();
-   Dictionary dict = new Dictionary();
    public QuerySidekick(){}
 
     // process old queries from oldQueryFile
@@ -33,13 +32,14 @@ public class QuerySidekick
       for (String word : aFileContents) {
          radTree.addWord(radTree.root , word, 1);
       }
+      radTree.printTree();
    }
 
     // based on a character typed in by the user, return 5 query guesses in an array
     // currChar: current character typed in by the user
     // currCharPosition: position of the current character in the query, starts from 0
    public String[] guess(char currChar, int currCharPosition){
-	
+      String[] guesses = new String[5];
       return guesses;
    }
 
@@ -57,7 +57,7 @@ public class QuerySidekick
     // b.         false               null
     // c.         false               correct query
    public void feedback(boolean isCorrectGuess, String correctQuery){
-
+   
    }
 
 }
