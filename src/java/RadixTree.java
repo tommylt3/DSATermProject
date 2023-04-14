@@ -46,7 +46,7 @@ public class RadixTree {
 
             // if the subword is smaller than the prefix and is actually the prefix of 'prefix'. e.g. prefix = freedom and subword = free
             if (prefix.length() == subword.length() && subword.equals(prefix)) {
-                freq++;
+                current.freq++;
             } if (prefix.length() > subword.length() && subword.equals(prefix.substring(0, subword.length()))) {      
                 Node new_parent = new Node (subword, freq, new Node[36]);
                 current.word = prefix.substring(subword.length(), prefix.length());
@@ -126,18 +126,6 @@ public class RadixTree {
 
         Pair (int f, String w) {freq = f; word = w;}
     }
-    
-    
-    /*
-    Needed function: Return all words with the given prefix in an array, sorted by frequency. Since the frequency does
-    not need to be returned, only a String[] needs to be returned.
-    Possible way to do this: traverse the tree to the last node that matches, then us something like
-    depth first search to get all the words. 
-
-    public String[] prefixMatch (String prefix) {
-
-    }
-    */
 
     /* For testing, prints radix tree using breadth-first search */
     public void printTree () {
