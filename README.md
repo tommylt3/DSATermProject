@@ -19,3 +19,4 @@ data
 Ideas for optimization
    Try tree
       - Prioritizes smaller phrases to avoid running out of guesses.
+      - Implement RadixTree into Trie Tree 
