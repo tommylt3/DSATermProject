@@ -93,10 +93,12 @@ public class RadixTree {
     /* given a parent node, returns all words from the parent node, appending the prefix on the front */
     public String[] prefixMatch (Node parent, String prefix) {
         ArrayList<Pair> answers = new ArrayList<Pair>();
-        if (parent.freq > 0) {
-            answers.add(new Pair (parent.freq, prefix + parent.word));
+        if (parent != null) {
+            if (parent.freq > 0) {
+                answers.add(new Pair (parent.freq, prefix + parent.word));
+            }
+            dfs (parent, prefix + parent.word, answers);
         }
-        dfs (parent, prefix + parent.word, answers);
 
         answers.sort(new comparatorPair());
         String[] sortedWords = new String[answers.size()];
