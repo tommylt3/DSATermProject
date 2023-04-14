@@ -9,6 +9,7 @@ public class Node implements Comparable<Node> {
    private boolean isWord;
    private String fullWord;
    private int weight;
+   private boolean isChecked;
    HashMap<String,Node> children = new HashMap<>();
    // Constructor 
    Node(String letter,int weight) {
@@ -16,6 +17,7 @@ public class Node implements Comparable<Node> {
       this.weight = weight;  
       this.isWord = false;
       this.fullWord = null;
+      this.isChecked = false;
    }
    Node(String letter){
       this.letter = letter;
@@ -51,15 +53,20 @@ public class Node implements Comparable<Node> {
    public boolean isWord() {
       return this.isWord;
    }
-   // setter for the boolean of if the node is a word / end of this node 
-   public void setiSWord(Boolean in) {
-      this.isWord = in;
-   }
+
    // Setter for boolean of if the node is a word
    public void setWord(Boolean in) {
       this.isWord = in;
    }
-   
+   // Getter for the boolean of if the node is a Checked node during searching
+   public boolean isChecked() {
+      return this.isChecked;
+   }
+
+   // Setter for boolean of if the node is a checked
+   public void setisChecked(Boolean in) {
+      this.isChecked = in;
+   }
    // Getter for the children of this node 
    public HashMap<String, Node> getChildren() {
       return this.children;

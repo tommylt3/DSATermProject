@@ -45,8 +45,6 @@ public class QuerySidekick
        this.currWord = this.currWord + currChar;
        System.out.println(this.currWord);
        listGuesses = tree.findPrefix(this.currWord);
-       for(int i = 0; i < guesses.length; i++) {
-       }
        return guesses;
     }
 

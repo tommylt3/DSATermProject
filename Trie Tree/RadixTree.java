@@ -79,8 +79,9 @@ public class RadixTree {
       }
       // Checks if the prefix that was passed as a parameter is a full word 
       // adds the word to the nodes array list
-      if(word.isWord()) {
+      if(word.isWord() && !word.isChecked()) {
          nodes.add(word);
+         word.setisChecked(true);
       }
       // BFS 
       Queue<Node> queueHold = new LinkedList<>();
@@ -93,6 +94,7 @@ public class RadixTree {
          // if the node is a 
          if(curr.isWord()) {
             nodes.add(curr);
+            word.setisChecked(true);
          }
          // get a list of all of curr's children 
          ArrayList<Node> listChildren = curr.listChild();
@@ -113,7 +115,7 @@ public class RadixTree {
       while(!queueNode.isEmpty()) {
          // remove one Node from the queue 
          Node curr = queueNode.remove();
-         // Print the node curr s
+         // Print the node currs
          System.out.println(curr + " contains : ");
          // get a list of all of curr's children 
          ArrayList<Node> listChildren = curr.listChild();
