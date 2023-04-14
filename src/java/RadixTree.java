@@ -45,7 +45,9 @@ public class RadixTree {
             String prefix = current.word;     // word that is currently in the spot
 
             // if the subword is smaller than the prefix and is actually the prefix of 'prefix'. e.g. prefix = freedom and subword = free
-            if (prefix.length() > subword.length() && subword.equals(prefix.substring(0, subword.length()))) {      
+            if (prefix.length() == subword.length() && subword.equals(prefix)) {
+                freq++;
+            } if (prefix.length() > subword.length() && subword.equals(prefix.substring(0, subword.length()))) {      
                 Node new_parent = new Node (subword, freq, new Node[36]);
                 current.word = prefix.substring(subword.length(), prefix.length());
                 new_parent.children[calcIndex(current.word.charAt(0))] = current;
@@ -79,11 +81,13 @@ public class RadixTree {
         }
     }
 
+    /* given a parent node and a character, returns node stored in spot corresponding to the character */
     public Node findNode (char c, Node parent) {
         int index = calcIndex(c);
         return parent.children[index];
     }
 
+    /* given a parent node, returns all words from the parent node, appending the prefix on the front */
     public String[] prefixMatch (Node parent, String prefix) {
         ArrayList<Pair> answers = new ArrayList<Pair>();
         if (parent.freq > 0) {
