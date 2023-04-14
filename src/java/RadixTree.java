@@ -167,4 +167,9 @@ public class RadixTree {
         else            // number
             return index - 48;
     }
+    
+    // add word without calling the root 
+    public void addWord(String word, int freq) {
+       this.addWord(root, word, freq);
+    }
 }
