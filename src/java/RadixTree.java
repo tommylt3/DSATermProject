@@ -36,7 +36,6 @@ public class RadixTree {
 
     /* unfinished function to add a given string to the radix tree */
     public void addWord (Node parent, String subword, int freq) {
-
         int index = calcIndex(subword.charAt(0));   // converts first character to index in array of children
         Node current = parent.children[index];        // node currently in index where the subword belongs
 

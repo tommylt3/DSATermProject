@@ -1,9 +1,6 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class Dictionary { 
 	// variable declaration 
@@ -52,16 +49,9 @@ public class Dictionary {
    // Dictionary to text file 
    public void toTextFile(String fileName) throws IOException {
 	   FileWriter writer = new FileWriter(fileName);
-	   for(String word : dictionary.keySet()) {
+	   for (String word : dictionary.keySet()) {
           int count = dictionary.get(word);
           writer.write(word + " " + count + "\n");
        }
    }
-   public void addFromText(String fileName) throws FileNotFoundException {
-	   Scanner sc = new Scanner(new File(fileName));
-	   while(sc.hasNext()) {
-		   this.addWord(sc.next());
-	   }
-   }
-
 }
