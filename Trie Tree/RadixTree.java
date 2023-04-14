@@ -165,5 +165,25 @@ public class RadixTree {
       }
    }
    
+   public void isCheckedReset() {
+      // Queue to store children of Node curr
+      Queue<Node> queueNode = new LinkedList<>();
+      // Start with root node in queue 
+      queueNode.add(this.root);
+      // loop to run until no children are left 
+      while(!queueNode.isEmpty()) {
+         // remove one Node from the queue 
+         Node curr = queueNode.remove();
+         // Sets nodes isChecked variable False
+         curr.setisChecked(false);
+         // get a list of all of curr's children 
+         ArrayList<Node> listChildren = curr.listChild();
+         // loop through all children and enqueue 
+         for(int i = 0; i < listChildren.size(); i++) {
+            queueNode.add(listChildren.get(i));
+         }
+      }
+   }
+   
    
 }

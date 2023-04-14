@@ -71,12 +71,10 @@ public class Node implements Comparable<Node> {
    public HashMap<String, Node> getChildren() {
       return this.children;
    }
-   
    // Setter for the children
    public void setChildren(HashMap<String,Node> in) {
       this.children = in;
    }
-   
    // Accessor method to add a child to the hash map 
    public void addChildren(String word, Node child) {
       this.children.put(word, child);
@@ -94,7 +92,6 @@ public class Node implements Comparable<Node> {
       }
       return childList;
    }
-   
    // Getter for the all the names of children of a node
    public ArrayList<String> listChildNames() {
       ArrayList<String> childList = new ArrayList<>();

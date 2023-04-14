@@ -71,10 +71,12 @@ public class QuerySidekick
 
       if (isCorrectGuess && correctQuery.equals("correctQuery")){
          // WE GOT IT RIGHT
+
       }
 
       if (!isCorrectGuess && correctQuery.equals("correctQuery")){
          // DIDNT GET IT RIGHT BUT TIME FOR A NEW WORD
+         
       }
    }
 }
