@@ -11,8 +11,29 @@
   
 */
 
+import java.util.ArrayDeque;
+
 public class RadixTree {
-    public class Node {
+    /* // Used to test the addword function
+    public static void main (String args[]) {
+        addWord(root, "free", 5);
+        addWord(root, "freedom", 7);
+        addWord(root, "lucky", 4);
+        printTree();
+
+        /*
+        cases to consider:
+        ---------------------
+        prefix      subword
+        freedom     fire
+        fire        freedom
+        free        freedom 
+        freedom     free
+        /
+    }
+    */
+    
+    public static class Node {
         String word;        // portion of word or letter stored in node
         boolean isEnd;      // is node the end of a word?
         int freq;           // word frequency
@@ -30,15 +51,16 @@ public class RadixTree {
 
     Node root = new Node ("", false, 0, new Node[36]);  // 26 lower case letters + 10 numerical digits
 
+    RadixTree () {} // constructor for radix tree
+
     /* unfinished function to add a given string to the radix tree */
     public void addWord (Node parent, String subword, int freq) {
-        // Should add check that string is long enough
 
         int index = calcIndex(subword.charAt(0));   // converts first character to index in array of children
         Node current = parent.children[index];        // node currently in index where the subword belongs
 
         if (current == null) {    // if there is no word in the spot, place the subword there
-            parent.children[index] = new Node(subword, true, freq);
+            parent.children[index] = new Node(subword, true, freq, new Node[36]);
         } else {
             String prefix = current.word;     // word that is currently in the spot
 
@@ -51,7 +73,7 @@ public class RadixTree {
 
                 // if the prefix is actually the prefix for subword, e.g. prefix = free and subword = freedom, call addWord on the suffix portion of the subword (in the example this would be "dom")
             } else if (prefix.length() < subword.length() && prefix.equals(subword.substring(0, prefix.length()))) {    
-                addWord (current, subword.substring(1, prefix.length()), freq);
+                addWord (current, subword.substring(prefix.length(), subword.length()), freq);
             
             // if there is a child but they aren't equal because the compressed word doesn't match. e.g. freedom and fire, 
             } else {
@@ -65,7 +87,7 @@ public class RadixTree {
                 /*
                 Example: prefix = freedom and subword = fire, i = 1
                 prefix will become "f" and the only child of prefix (current) will be "reedom", the "reedom" node (new_child) will
-                take all of prefixes' children at its own, then we will call addWord on the current with the substring "ire"
+                take all of prefixes' children at its own, then we will call addWord with the substring "ire"
                 */
                 Node new_child = new Node (prefix.substring(i, prefix.length()), current.isEnd, current.freq, current.children);   // create new node, taking on current's children
                 current.isEnd = false;    // since new_child is taking the end of current's word, current cannot be a word ending
@@ -75,15 +97,25 @@ public class RadixTree {
                 addWord (current, subword.substring(i, subword.length()), freq);  // call function on substring, exlcuding portion of string that current holds
             }
         }
-        /*
-        cases to consider:
-        ---------------------
-        prefix      subword
-        freedom     fire
-        fire        freedom
-        free        freedom
-        freedom     free
-        */
+    }
+
+    /* For program testing, prints radix tree using breadth-first search */
+    public void printTree () {
+        ArrayDeque<Node> queue= new ArrayDeque<Node>();
+        queue.addLast(root);
+        while (queue.size() > 0) {
+            Node k = queue.removeFirst();
+            System.out.printf("\"%s\" contains:", k.word);
+            if (k.children != null) {
+                for (int i = 0; i < k.children.length; i++) {
+                    if (k.children[i] != null) {
+                        System.out.printf(" \"%s\"", k.children[i].word);
+                        queue.addLast(k.children[i]);
+                    }
+                }
+            }
+            System.out.printf("%n");
+        }
     }
 
     /*
@@ -98,7 +130,7 @@ public class RadixTree {
     */
 
     // calculates index that character corresponds to
-    public int calcIndex (char c) {
+    public static int calcIndex (char c) {
         int index = c;
         if (index > 96) // lowercase letter
             return index - 87;
