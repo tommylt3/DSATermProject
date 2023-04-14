@@ -30,7 +30,6 @@ public class RadixTree {
 
     Node root = new Node ("", false, 0, new Node[36]);  // 26 lower case letters + 10 numerical digits
 
-
     /* unfinished function to add a given string to the radix tree */
     public void addWord (Node parent, String subword, int freq) {
         // Should add check that string is long enough
