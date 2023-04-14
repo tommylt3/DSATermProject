@@ -1,19 +1,35 @@
 /* Used to test RadixTree*/
 
-public class testerRadix {
+public class TesterRadix {
     public static void main (String args[]) {
         RadixTree tester = new RadixTree();
-        tester.addWord(tester.root, "freebee", 5);
+        tester.addWord(tester.root, "freebe", 5);
+        tester.addWord(tester.root, "fire", 8);
+        tester.addWord(tester.root, "fire", 8);
         tester.addWord(tester.root, "freedom", 7);
         tester.addWord(tester.root, "lucky", 4);
         tester.printTree();
 
-        RadixTree.Node last = tester.findNode('f', tester.root);
-        String[] answers = tester.prefixMatch(last, "");
+
+        /*How to properly search for all words with the given prefix*/
+        char[] fr = {'f', 'i'};
+        RadixTree.Node last = tester.root;
         
-        System.out.println("results: ");
-        for (int i = 0; i < answers.length; i++) {
-            System.out.println(answers[i]);
+        int i = 0;
+        for (int j = 0; j < fr.length; j++) {
+            RadixTree.Node temp = tester.findNode(fr[j], last, i);
+            if (temp == last) {
+                i++;
+            } else {
+                i = 0;
+            }
+            last = temp;
+
+            String[] answers = tester.prefixMatch(last, "");
+            System.out.println("results: ");
+            for (int k = 0; k < answers.length; k++) {
+                System.out.println(answers[k]);
+            }
         }
 
         /*
