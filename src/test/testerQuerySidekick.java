@@ -9,6 +9,5 @@ public class testerQuerySidekick {
       catch (FileNotFoundException e) {
          e.printStackTrace();
       }
-
    }
 }

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class QuerySidekick
 {
-   String[] guesses = new String[5];  // 5 guesses from QuerySidekick
+   ArrayList<Character> currentChar = new ArrayList<Character>();
    RadixTree radTree = new RadixTree();
    public QuerySidekick(){}
 
@@ -26,6 +26,7 @@ public class QuerySidekick
     //
     // to remove extra spaces with one space
     // str2 = str1.replaceAll("\\s+", " ");
+
    public void processOldQueries(String oldQueryFile) throws FileNotFoundException{
       FileManager aFile = new FileManager(oldQueryFile);
       ArrayList<String> aFileContents = aFile.readFile();
@@ -40,6 +41,12 @@ public class QuerySidekick
     // currCharPosition: position of the current character in the query, starts from 0
    public String[] guess(char currChar, int currCharPosition){
       String[] guesses = new String[5];
+      currentChar.add(currCharPosition, Character.valueOf(currChar));
+      String findMe = currentChar.toString();
+      String thePossibleWords[] = radTree.prefixMatch(radTree.root, findMe);
+      for (int i = 0; i < 5; i++){
+         thePossibleWords[i] = guesses[i];
+      }
       return guesses;
    }
 
@@ -57,7 +64,16 @@ public class QuerySidekick
     // b.         false               null
     // c.         false               correct query
    public void feedback(boolean isCorrectGuess, String correctQuery){
-   
-   }
+      if (!isCorrectGuess && correctQuery == null){
+         // The Guesses For The Word Aren't Done But Aren't Right
+      }
 
+      if (isCorrectGuess && correctQuery.equals("correctQuery")){
+         // WE GOT IT RIGHT
+      }
+
+      if (!isCorrectGuess && correctQuery.equals("correctQuery")){
+         // DIDNT GET IT RIGHT BUT TIME FOR A NEW WORD
+      }
+   }
 }
