@@ -1,5 +1,4 @@
 /*
-
   Authors (group members): Austin Phillips, Evan Thompson, Fiona Cahalan, and Tommy Gingerelli
   Email addresses of group members:
   Group name: FATE
@@ -8,13 +7,11 @@
   Section: 14
 
   Description of the file:
-  
 */
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
-
 
 public class RadixTree {
     
@@ -117,7 +114,7 @@ public class RadixTree {
                 answers.add(new Pair (parent.freq, prefix + parent.word));
                 // WILL BE ERRORS HERE! It appends the whole parent word, we may not want that
             }
-            dfs (parent, prefix, answers);
+            preorder (parent, prefix, answers);
         }
 
         answers.sort(new comparatorPair());
@@ -129,13 +126,13 @@ public class RadixTree {
     }
 
     /* */
-    public void dfs (Node parent, String prefix, ArrayList<Pair> answers) {
+    public void preorder (Node parent, String prefix, ArrayList<Pair> answers) {
         for (int i = parent.children.length - 1; i >= 0; i--) {
             if (parent.children[i] != null) {
                 if (parent.children[i].freq > 0) {
                     answers.add(new Pair (parent.children[i].freq, prefix + parent.children[i].word));
                 } 
-                dfs (parent.children[i], prefix + parent.children[i].word, answers);
+                preorder (parent.children[i], prefix + parent.children[i].word, answers);
             }
         }
     }
