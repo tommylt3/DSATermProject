@@ -61,7 +61,7 @@ public class RadixTree {
             } else {
                 // find first character that doesn't match
                 int i = 0;
-                while (subword.charAt(i) == prefix.charAt(i) && i < prefix.length()){
+                while (i < prefix.length() && subword.charAt(i) == prefix.charAt(i)){
                     i++;
                 }
 
@@ -81,13 +81,30 @@ public class RadixTree {
         }
     }
 
+    public boolean isWordInTree (String word) {
+        Node current = root;
+        int i = 0;
+        while (i < word.length() && current.children[calcIndex(word.charAt(i))] != null) {
+            current = current.children[calcIndex(word.charAt(i))];
+            int j = 0;
+            while (i < word.length() && j < current.word.length() && word.charAt(i) == current.word.charAt(j)){
+                i++;
+                j++;
+            }
+            if (i < current.word.length()) return false;
+        }
+        if (i > word.length()) return true;
+        return false;
+    }
+
     /* given a parent node and a character, returns node stored in spot corresponding to the character */
     public Node findNode (char c, Node parent, int i) {
         int index = calcIndex(c);
-        if (parent.word.length() > i && parent.word.charAt(i) == c)
+        if (parent == null || (parent.word.length() > i && parent.word.charAt(i) == c)) {
             return parent;
-        else  
+        } else {
             return parent.children[index];
+        }
     }
 
     /* given a parent node, returns all words from the parent node, appending the prefix on the front */
@@ -96,8 +113,9 @@ public class RadixTree {
         if (parent != null) {
             if (parent.freq > 0) {
                 answers.add(new Pair (parent.freq, prefix + parent.word));
+                // WILL BE ERRORS HERE! It appends the whole parent word, we may not want that
             }
-            dfs (parent, prefix + parent.word, answers);
+            dfs (parent, prefix, answers);
         }
 
         answers.sort(new comparatorPair());
@@ -121,7 +139,7 @@ public class RadixTree {
 
     public static class comparatorPair implements Comparator<Pair> {
         public int compare (Pair x, Pair y) {
-            return Integer.compare(x.freq, y.freq);
+            return -1 * Integer.compare(x.freq, y.freq);
         }
     }
 
