@@ -8,12 +8,10 @@ public class Test {
 
    public static void main(String[] args) throws FileNotFoundException {
       RadixTree hold = new RadixTree();
-      String fileName = "florida_beachQueriesOld.txt";
+      String fileName = "TestNew.txt";
       hold = buildRadix(fileName);
-      String prefix = "b";
-      String[] arrGuess = hold.bestGuesses(prefix);
+      String prefix = "Austin";
       hold.printBestGuesses(prefix);
-      
       // Currently if the prefix guess is a word that word will return twice in the output array, something wrong with the 
       // 
 
@@ -21,8 +19,8 @@ public class Test {
    public static RadixTree buildRadix(String fileName) throws FileNotFoundException {
       RadixTree out = new RadixTree();
       Scanner sc = new Scanner(new File(fileName));
-      while(sc.hasNext()) {
-         String hold = sc.next();
+      while(sc.hasNextLine()) {
+         String hold = sc.nextLine();
          out.insert(hold,1);
       }
       return out;

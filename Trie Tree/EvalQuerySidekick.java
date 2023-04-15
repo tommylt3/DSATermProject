@@ -125,7 +125,6 @@ public class EvalQuerySidekick
 		long startTime = bean.getCurrentThreadCpuTime();
 		//Each character is passed to the QuerySidekick program to return 3 gussess
 		String[] guesses = qs.guess(query.charAt(indexCharacter), indexCharacter);
-		System.out.println(Arrays.toString(guesses));
 		//To calculate the time taken for each guess operation
 		long endTime = bean.getCurrentThreadCpuTime();
 		totalElapsedTime = totalElapsedTime + (endTime - startTime);
@@ -135,9 +134,7 @@ public class EvalQuerySidekick
 		for(int indexGuess=0; indexGuess < 5; indexGuess++){
 		    //If there was a correct guess, call the feedback method and calculate percentage of characters skipped
 		   
-		    System.out.println(query.equalsIgnoreCase(guesses[indexGuess]) + " here " + guesses[indexGuess] + " : " + query);
 		    if(query.equalsIgnoreCase(guesses[indexGuess])){
-		       System.out.println("eh");
 			isCorrectGuess = true;
 			correctGuess = guesses[indexGuess];
 			//Calculates the percentage of characters skipped

@@ -18,7 +18,6 @@ public class QuerySidekick
     String[] guesses = new String[5];  // 5 guesses from QuerySidekick
     RadixTree tree;
     String currWord;
-    ArrayList<Node> listGuesses = new ArrayList<Node>();
     // initialization of ...
     public QuerySidekick()
     {
@@ -43,8 +42,8 @@ public class QuerySidekick
     public String[] guess(char currChar, int currCharPosition)
     {
        this.currWord = this.currWord + currChar;
-       System.out.println(this.currWord);
-       listGuesses = tree.findPrefix(this.currWord);
+       guesses = tree.bestGuesses(this.currWord);
+       
        return guesses;
     }
 
@@ -65,6 +64,10 @@ public class QuerySidekick
     { 
        if(isCorrectGuess) {
           this.currWord = "";
+          tree.isCheckedReset();
+       } else if(!isCorrectGuess && correctQuery != null) {
+          this.currWord = "";
+          tree.isCheckedReset();
        }
        
 

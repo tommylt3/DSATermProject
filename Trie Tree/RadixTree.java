@@ -92,10 +92,10 @@ public class RadixTree {
          // remove one Node from the queue 
          Node curr = queueHold.remove();
          // if the node is a 
-         if(curr.isWord()) {
+         if(curr.isWord() && !curr.isChecked()) {
             nodes.add(curr);
-            word.setisChecked(true);
-         }
+            curr.setisChecked(true);
+         } 
          // get a list of all of curr's children 
          ArrayList<Node> listChildren = curr.listChild();
          // loop through all children and enqueue 
@@ -129,8 +129,8 @@ public class RadixTree {
       String[] output = new String[5];
       ArrayList<Node> guesses = this.findPrefix(prefix);
       if(guesses == null) {
-         System.out.println("No matching prefixes");
-         return null;
+         String[] out = {"Austin" ,"Test" , "test 2" , "test3","Test4"}; 
+         return out;
       }
       Collections.sort(guesses);
       int min = Integer.min(guesses.size(), 5);
@@ -139,7 +139,6 @@ public class RadixTree {
          output[j] = guesses.get(i).getFullWord();
          j++;
       }
-      
       return output;
    }
    public void printBestGuesses(String prefix) {
@@ -150,7 +149,6 @@ public class RadixTree {
       }
       Collections.sort(guesses);
       int min = Integer.min(guesses.size(), 5);
-      System.out.println("Guess size" + guesses.size());
       for(int i = guesses.size() -  1; i >= guesses.size() - min; i--) {
          System.out.print(guesses.get(i) + " ");
       }
