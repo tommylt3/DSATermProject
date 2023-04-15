@@ -1,15 +1,12 @@
 /*
-
-  Authors (group members):
+  Authors (group members): Austin Phillips, Evan Thompson, Fiona Cahalan, and Tommy Gingerelli
   Email addresses of group members:
-  Group name:
+  Group name: FATE
 
-  Course:
-  Section:
+  Course: CSE2010
+  Section: 14
 
-  Description of the overall algorithm:
-
-
+  Description of the file:
 */
 
 import java.util.Scanner;
@@ -30,6 +27,7 @@ public class QuerySidekick
     // initialization of ...
     public QuerySidekick() {}
 
+    // processes old queries from oldQueryFile
     public void processOldQueries(String oldQueryFile) throws FileNotFoundException{
         Scanner reader = new Scanner(new FileReader(oldQueryFile));
         while (reader.hasNextLine()) {
@@ -42,7 +40,6 @@ public class QuerySidekick
     // based on a character typed in by the user, return 5 query guesses in an array
     // currChar: current character typed in by the user
     // currCharPosition: position of the current character in the query, starts from 0
-
     public String[] guess(char currChar, int currCharPosition){
         currWord = currWord + currChar;
         RadixTree.Node temp = radTree.findNode(currChar, last, i + 1);
@@ -52,45 +49,42 @@ public class QuerySidekick
             i = 0;
         }
         last = temp;
-        // System.out.printf("%ncurrent Node: %s i: %d%n" , last != null && last.word != null ? last.word : "", i);
         
         String thePossibleWords[] = radTree.prefixMatch(last, currWord + (last != null && last.word.length() > i ? last.word.substring(i + 1, last.word.length()) : "" ));
         
+        // doesn't use old guesses
         /*
-        System.out.println("results: " + thePossibleWords.length);
-        for (int k = 0; k < thePossibleWords.length && k < 5; k++) {
-            System.out.println(thePossibleWords[k]);
-        }
-        */
-        
-        
         int k = 0;
         int j = 0;
         while (j < guesses.length) {
-            if (j >= thePossibleWords.length) {
+            if (k >= thePossibleWords.length) {
                 guesses[j] = "";
                 j++;
             } else {
-                if (!pastGuesses.isWordInTree(thePossibleWords[j])) {
-                    guesses[j] = thePossibleWords[j];
-                    i++;
+                if (!pastGuesses.isWordInTree(thePossibleWords[k])) {
+                    guesses[j] = thePossibleWords[k];
+                    pastGuesses.addWord(radTree.root, thePossibleWords[k], 1);
+                    k++;
                     j++;
+                } else {
+                    k++;
                 }
-                i++;
-            }
-        }
-        
-        
-        /*
-        for (int j = 0; j < guesses.length; j++) {
-            if (j >= thePossibleWords.length) {
-                guesses[j] = "";
-            } else {
-                guesses[j] = thePossibleWords[j];
-                // pastGuesses.addWord(radTree.root, thePossibleWords[j], 1);
             }
         }
         */
+
+        int k = 0;
+        int j = 0;
+        while (j < guesses.length) {
+            if (k >= thePossibleWords.length) {
+                guesses[j] = "";
+                j++;
+            } else {
+                guesses[j] = thePossibleWords[k];
+                k++;
+                j++;
+            }
+        }
         
         return guesses;
     }

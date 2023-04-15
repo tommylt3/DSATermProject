@@ -15,10 +15,10 @@ import java.util.Comparator;
 
 public class RadixTree {
     
-    /**/
+    /* Node within the radix tree holding the frequency, a word or a portion of a word, and the node's children*/
     public static class Node {
         String word;        // portion of word or letter stored in node
-        int freq;           // word frequency, frew > 0 indicates a word end
+        int freq;           // word frequency, freq > 0 indicates a word end
         Node[] children;    // children of node
 
         Node (String w, int f, Node[] c) {
@@ -28,14 +28,29 @@ public class RadixTree {
         }
     }
 
-    static int arraySize = 68;
-    Node root = new Node ("", 0, new Node[94]);  // 26 lower case letters + 10 numerical digits
+    static int arraySize = 68;      // size of children[] in Node
+    Node root = new Node ("", 0, new Node[arraySize]);  // root of radix tree, holds empty string
     RadixTree () {} // constructor for radix tree
 
-    /* unfinished function to add a given string to the radix tree */
+
+    // given a character, calculates corresponding index in children[] in a Node
+    public static int calcIndex (char c) {
+        int index = c;
+        if (index > 91)
+            return index - 58;
+        else            
+            return index - 32;
+    }
+    
+    // add word without calling the root 
+    public void addWord(String word, int freq) {
+       this.addWord(root, word, freq);
+    }
+
+    /* recursive function that adds a given word or subword to the radix tree*/
     public void addWord (Node parent, String subword, int freq) {
-        int index = calcIndex(subword.charAt(0));   // converts first character to index in array of children
-        Node current = parent.children[index];        // node currently in index where the subword belongs
+        int index = calcIndex(subword.charAt(0));       // index in children[] corresponding to first character of given word
+        Node current = parent.children[index];          // node currently stored at the index where the subword belongs
 
         if (current == null) {    // if there is no word in the spot, place the subword there
             parent.children[index] = new Node(subword, freq, new Node[arraySize]);
@@ -85,14 +100,26 @@ public class RadixTree {
         int i = 0;
         while (i < word.length() && current.children[calcIndex(word.charAt(i))] != null) {
             current = current.children[calcIndex(word.charAt(i))];
+            
+            /*
             int j = 0;
             while (i < word.length() && j < current.word.length() && word.charAt(i) == current.word.charAt(j)){
                 i++;
                 j++;
             }
             if (i < current.word.length()) return false;
+            */ 
+
+            
+            if (current.word.length() <= word.length() && current.word.equals(word.substring(0, current.word.length()))) {
+                i += current.word.length();
+            } else {
+                return false;
+            }
+            
         }
-        if (i > word.length()) return true;
+        if (i > word.length()) 
+            return true;
         return false;
     }
 
@@ -111,8 +138,7 @@ public class RadixTree {
         ArrayList<Pair> answers = new ArrayList<Pair>();
         if (parent != null) {
             if (parent.freq > 0) {
-                answers.add(new Pair (parent.freq, prefix + parent.word));
-                // WILL BE ERRORS HERE! It appends the whole parent word, we may not want that
+                answers.add(new Pair(parent.freq, prefix));
             }
             preorder (parent, prefix, answers);
         }
@@ -125,11 +151,11 @@ public class RadixTree {
         return sortedWords;
     }
 
-    /* */
+    /* visits nodes in preorder, constructing words and adding them to answers ArrayList */
     public void preorder (Node parent, String prefix, ArrayList<Pair> answers) {
         for (int i = parent.children.length - 1; i >= 0; i--) {
-            if (parent.children[i] != null) {
-                if (parent.children[i].freq > 0) {
+            if (parent.children[i] != null) {           // if there is a word
+                if (parent.children[i].freq > 0) {      // if Node contains the end of a word, add word to answers
                     answers.add(new Pair (parent.children[i].freq, prefix + parent.children[i].word));
                 } 
                 preorder (parent.children[i], prefix + parent.children[i].word, answers);
@@ -137,14 +163,14 @@ public class RadixTree {
         }
     }
 
-    /**/
+    /* sort Pair by frequency */
     public static class comparatorPair implements Comparator<Pair> {
         public int compare (Pair x, Pair y) {
             return -1 * Integer.compare(x.freq, y.freq);
         }
     }
 
-    /**/
+    /* holds a word and its frequency together as a pair */
     public static class Pair {
         int freq;
         String word;
@@ -159,7 +185,7 @@ public class RadixTree {
         while (queue.size() > 0) {
             Node k = queue.removeFirst();
             System.out.printf("\"%s\" contains:", k.word);
-            if (k.children != null) {           // may be able to remove this if statement, it should never be null
+            if (k.children != null) {
                 for (int i = 0; i < k.children.length; i++) {
                     if (k.children[i] != null) {
                         System.out.printf(" \"%s\"", k.children[i].word);
@@ -169,19 +195,5 @@ public class RadixTree {
             }
             System.out.printf("%n");
         }
-    }
-
-    // calculates index that character corresponds to
-    public static int calcIndex (char c) {
-        int index = c;
-        if (index > 91)
-            return index - 58;
-        else            
-            return index - 32;
-    }
-    
-    // add word without calling the root 
-    public void addWord(String word, int freq) {
-       this.addWord(root, word, freq);
     }
 }
