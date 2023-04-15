@@ -31,6 +31,7 @@ public class RadixTree {
         }
     }
 
+    static int arraySize = 68;
     Node root = new Node ("", 0, new Node[94]);  // 26 lower case letters + 10 numerical digits
     RadixTree () {} // constructor for radix tree
 
@@ -40,7 +41,7 @@ public class RadixTree {
         Node current = parent.children[index];        // node currently in index where the subword belongs
 
         if (current == null) {    // if there is no word in the spot, place the subword there
-            parent.children[index] = new Node(subword, freq, new Node[94]);
+            parent.children[index] = new Node(subword, freq, new Node[arraySize]);
         } else {
             String prefix = current.word;     // word that is currently in the spot
 
@@ -48,7 +49,7 @@ public class RadixTree {
             if (prefix.length() == subword.length() && subword.equals(prefix)) {
                 current.freq++;
             } else if (prefix.length() > subword.length() && subword.equals(prefix.substring(0, subword.length()))) {      
-                Node new_parent = new Node (subword, freq, new Node[94]);
+                Node new_parent = new Node (subword, freq, new Node[arraySize]);
                 current.word = prefix.substring(subword.length(), prefix.length());
                 new_parent.children[calcIndex(current.word.charAt(0))] = current;
                 parent.children[index] = new_parent;
@@ -73,7 +74,7 @@ public class RadixTree {
                 */
                 Node new_child = new Node (prefix.substring(i, prefix.length()), current.freq, current.children);   // create new node, taking on current's children
                 current.freq = 0;   // since new_child is taking the end of current's word, current cannot be a word ending
-                current.children = new Node[94];    // create empty list of children
+                current.children = new Node[arraySize];    // create empty list of children
                 current.children[calcIndex(new_child.word.charAt(0))] = new_child;  // list new_child as current's child
                 current.word = prefix.substring(0, i);      // remove part of current's word that is in new_child
                 addWord (current, subword.substring(i, subword.length()), freq);  // call function on substring, exlcuding portion of string that current holds
@@ -81,6 +82,7 @@ public class RadixTree {
         }
     }
 
+    /* determines if the given word is in the Radix tree */
     public boolean isWordInTree (String word) {
         Node current = root;
         int i = 0;
@@ -126,6 +128,7 @@ public class RadixTree {
         return sortedWords;
     }
 
+    /* */
     public void dfs (Node parent, String prefix, ArrayList<Pair> answers) {
         for (int i = parent.children.length - 1; i >= 0; i--) {
             if (parent.children[i] != null) {
@@ -137,12 +140,14 @@ public class RadixTree {
         }
     }
 
+    /**/
     public static class comparatorPair implements Comparator<Pair> {
         public int compare (Pair x, Pair y) {
             return -1 * Integer.compare(x.freq, y.freq);
         }
     }
 
+    /**/
     public static class Pair {
         int freq;
         String word;
@@ -172,14 +177,10 @@ public class RadixTree {
     // calculates index that character corresponds to
     public static int calcIndex (char c) {
         int index = c;
-        return index - 32;
-
-        /*
-        if (index > 96) // lowercase letter
-            return index - 87;
-        else            // number
-            return index - 48;
-            */
+        if (index > 91)
+            return index - 58;
+        else            
+            return index - 32;
     }
     
     // add word without calling the root 
