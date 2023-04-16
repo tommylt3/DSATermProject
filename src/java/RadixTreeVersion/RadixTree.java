@@ -20,11 +20,13 @@ public class RadixTree {
         String word;        // portion of word or letter stored in node
         int freq;           // word frequency, freq > 0 indicates a word end
         Node[] children;    // children of node
+        String[][] oldGuesses;      // stores top 5 gusses for this node that wouldn't have been guessed by parent nodes
 
         Node (String w, int f, Node[] c) {
             word = w;
             freq = f;
             children = c;
+            oldGuesses = new String[w.length()][];
         }
     }
 
@@ -60,9 +62,12 @@ public class RadixTree {
             // if the subword is smaller than the prefix and is actually the prefix of 'prefix'. e.g. prefix = freedom and subword = free
             if (prefix.length() == subword.length() && subword.equals(prefix)) {
                 current.freq++;
+                
+                // if prefix is longer than the subword, then the actual prefix may be the subword
             } else if (prefix.length() > subword.length() && subword.equals(prefix.substring(0, subword.length()))) {      
                 Node new_parent = new Node (subword, freq, new Node[arraySize]);
                 current.word = prefix.substring(subword.length(), prefix.length());
+                current.oldGuesses = new String[current.word.length()][];
                 new_parent.children[calcIndex(current.word.charAt(0))] = current;
                 parent.children[index] = new_parent;
 
@@ -89,6 +94,7 @@ public class RadixTree {
                 current.children = new Node[arraySize];    // create empty list of children
                 current.children[calcIndex(new_child.word.charAt(0))] = new_child;  // list new_child as current's child
                 current.word = prefix.substring(0, i);      // remove part of current's word that is in new_child
+                current.oldGuesses = new String[current.word.length()][];
                 addWord (current, subword.substring(i, subword.length()), freq);  // call function on substring, exlcuding portion of string that current holds
             }
         }
@@ -108,17 +114,18 @@ public class RadixTree {
                 j++;
             }
             if (i < current.word.length()) return false;
-            */ 
+            */
 
-            
-            if (current.word.length() <= word.length() && current.word.equals(word.substring(0, current.word.length()))) {
+            // System.out.printf("test %s i: %d boolean: %b ", current.word, i, current.word.length() <= word.length() - i );
+            if (current.word.length() <= word.length() - i && current.word.equals(word.substring(i, current.word.length() + i))) {
                 i += current.word.length();
             } else {
                 return false;
             }
             
+            
         }
-        if (i > word.length()) 
+        if (i >= word.length()) 
             return true;
         return false;
     }
@@ -134,7 +141,7 @@ public class RadixTree {
     }
 
     /* given a parent node, returns all words from the parent node, appending the prefix on the front */
-    public String[] prefixMatch (Node parent, String prefix) {
+    public ArrayList<Pair> prefixMatch (Node parent, String prefix) {
         ArrayList<Pair> answers = new ArrayList<Pair>();
         if (parent != null) {
             if (parent.freq > 0) {
@@ -144,11 +151,7 @@ public class RadixTree {
         }
 
         answers.sort(new comparatorPair());
-        String[] sortedWords = new String[answers.size()];
-        for (int i = 0; i < answers.size(); i++) {
-            sortedWords[i] = answers.get(i).word;
-        }
-        return sortedWords;
+        return answers;
     }
 
     /* visits nodes in preorder, constructing words and adding them to answers ArrayList */

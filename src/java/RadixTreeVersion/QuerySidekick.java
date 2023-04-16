@@ -13,11 +13,13 @@ import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class QuerySidekick
 {
     String[] guesses = new String[5];  // 5 guesses from QuerySidekick
-    int i = 0;
+    int charIdx = 0;      // index/position of char in word of last node
     RadixTree radTree = new RadixTree();
     RadixTree.Node last = radTree.root;
     String currWord = "";
@@ -42,50 +44,53 @@ public class QuerySidekick
     // currCharPosition: position of the current character in the query, starts from 0
     public String[] guess(char currChar, int currCharPosition){
         currWord = currWord + currChar;
-        RadixTree.Node temp = radTree.findNode(currChar, last, i + 1);
+        // Returns node with currChar given the node with the last char. This may be the same node if last contains a word instead of a character
+        RadixTree.Node temp = radTree.findNode(currChar, last, charIdx+ 1); 
+        // if same node, increment charIdxto track which character in the word matches currChar
         if (temp == last) {
-            i++;
-        } else {
-            i = 0;
+            charIdx++;
+        } else {    // else it is the first character of a word because it's a new node
+            charIdx= 0;
         }
         last = temp;
-        
-        String thePossibleWords[] = radTree.prefixMatch(last, currWord + (last != null && last.word.length() > i ? last.word.substring(i + 1, last.word.length()) : "" ));
-        
-        // doesn't use old guesses
-        /*
-        int k = 0;
-        int j = 0;
-        while (j < guesses.length) {
-            if (k >= thePossibleWords.length) {
-                guesses[j] = "";
-                j++;
-            } else {
-                if (!pastGuesses.isWordInTree(thePossibleWords[k])) {
-                    guesses[j] = thePossibleWords[k];
-                    pastGuesses.addWord(radTree.root, thePossibleWords[k], 1);
-                    k++;
+
+        // if possible, use existing guesses
+        if (last != null && last.oldGuesses[charIdx] != null) {
+            guesses = last.oldGuesses[charIdx];
+            // store guesses in past guesses radix tree
+            for (int j = 0; j < guesses.length; j++) {
+                if (guesses[j].length() > 0)
+                    pastGuesses.addWord(guesses[j], 1);
+            }
+        } else {        // else generate guesses and save them
+            guesses = new String[5];
+            ArrayList<RadixTree.Pair> thePossibleWords = radTree.prefixMatch(last, currWord + (last != null && last.word.length() > charIdx? last.word.substring(charIdx+ 1, last.word.length()) : "" ));
+            int k = 0;
+            int j = 0;
+            while (j < guesses.length) {
+                // if there are not enough guesses, fill remaining spots with empty strings
+                if (k >= thePossibleWords.size()) {
+                    guesses[j] = "";
                     j++;
                 } else {
-                    k++;
+                    // if guess has not been made before, use as guess
+                    if (!pastGuesses.isWordInTree(thePossibleWords.get(k).word)) {
+                        guesses[j] = thePossibleWords.get(k).word;
+                        pastGuesses.addWord(thePossibleWords.get(k).word, 1);
+                        k++;
+                        j++;
+                    } else {
+                        k++;
+                    }
                 }
             }
-        }
-        */
-
-        int k = 0;
-        int j = 0;
-        while (j < guesses.length) {
-            if (k >= thePossibleWords.length) {
-                guesses[j] = "";
-                j++;
-            } else {
-                guesses[j] = thePossibleWords[k];
-                k++;
-                j++;
-            }
-        }
-        
+            
+            // store guesses to be made in node for reuse later
+            if (last != null) {
+                last.oldGuesses[charIdx] = guesses;
+            }      
+            
+        }      
         return guesses;
     }
 
@@ -107,7 +112,7 @@ public class QuerySidekick
         if (!isCorrectGuess && correctQuery == null){
             // The Guesses For The Word Aren't Done But Aren't Right
         } else {
-            i = 0;
+            charIdx= 0;
             last = radTree.root;
             currWord = "";
             pastGuesses = new RadixTree();
