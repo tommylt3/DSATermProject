@@ -6,7 +6,7 @@
   Course: CSE2010
   Section: 14
 
-  Description of the file:
+  Description of the file: This file is an implementation of the 
 */
 
 import java.util.ArrayDeque;
@@ -60,7 +60,8 @@ public class RadixTree {
             String prefix = current.word;     // word that is currently in the spot
 
             // if the subword is smaller than the prefix and is actually the prefix of 'prefix'. e.g. prefix = freedom and subword = free
-            if (prefix.length() == subword.length() && subword.equals(prefix)) {
+            // updated to only check if its equal and not check length 
+            if (subword.equals(prefix)) {
                 current.freq++;
                 
                 // if prefix is longer than the subword, then the actual prefix may be the subword
