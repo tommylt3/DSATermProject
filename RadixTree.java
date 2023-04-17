@@ -1,3 +1,4 @@
+<<<<<<< HEAD:RadixTree.java
 /*
   Authors (group members): Austin Phillips, Evan Thompson, Fiona Cahalan, and Tommy Gingerelli
   Email addresses of group members: fcahalan2022@my.fit.edu, Thompsone2021@my.fit.edu
