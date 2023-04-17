@@ -58,7 +58,7 @@ public class EvalQuerySidekick
 	    {
 		System.err.println("Usage: EvalQuerySidekick oldQueryFile newQueryFile");
 		System.exit(-1);
-	    }
+	   }
 
 	// for getting cpu time
 	ThreadMXBean bean = ManagementFactory.getThreadMXBean();        

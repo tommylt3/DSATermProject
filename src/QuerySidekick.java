@@ -10,11 +10,10 @@
 */
 
 import java.util.Scanner;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 
 public class QuerySidekick
 {
@@ -31,11 +30,13 @@ public class QuerySidekick
 
     // processes old queries from oldQueryFile
     public void processOldQueries(String oldQueryFile) throws FileNotFoundException{
-        Scanner reader = new Scanner(new FileReader(oldQueryFile));
-        while (reader.hasNextLine()) {
-            radTree.addWord(radTree.root, reader.nextLine().replaceAll("\\s+", " ").toLowerCase(), 1);
-        }
-        System.gc();
+      File readThis = new File(oldQueryFile);
+      Scanner reader = new Scanner(readThis);
+      while (reader.hasNextLine()) {
+         radTree.addWord(radTree.root, reader.nextLine().replaceAll("\\s+", " ").toLowerCase(), 1);
+      }
+      System.gc();
+      reader.close();
     }
 
 
@@ -111,7 +112,8 @@ public class QuerySidekick
     public void feedback(boolean isCorrectGuess, String correctQuery){
         if (!isCorrectGuess && correctQuery == null){
             // The Guesses For The Word Aren't Done But Aren't Right
-        } else {
+        } 
+        else {
             charIdx= 0;
             last = radTree.root;
             currWord = "";

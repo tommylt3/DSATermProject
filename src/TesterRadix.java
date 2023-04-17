@@ -25,7 +25,7 @@ public class TesterRadix {
             }
             last = temp;
 
-            String[] answers = tester.prefixMatch(last, "");
+            String[] answers = new String[5];
             System.out.println("results: ");
             for (int k = 0; k < answers.length; k++) {
                 System.out.println(answers[k]);
