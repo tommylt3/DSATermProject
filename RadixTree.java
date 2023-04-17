@@ -1,12 +1,11 @@
 /*
   Authors (group members): Austin Phillips, Evan Thompson, Fiona Cahalan, and Tommy Gingerelli
-  Email addresses of group members:
+  Email addresses of group members: fcahalan2022@my.fit.edu, Thompsone2021@my.fit.edu
+									Aphillps2022@my.fit.edu, tgingerelli2021@my.fit.edu
   Group name: FATE
 
   Course: CSE2010
   Section: 14
-
-  Description of the file: This file is an implementation of the 
 */
 
 import java.util.ArrayDeque;

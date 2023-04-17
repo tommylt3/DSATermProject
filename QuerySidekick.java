@@ -1,12 +1,15 @@
 /*
   Authors (group members): Austin Phillips, Evan Thompson, Fiona Cahalan, and Tommy Gingerelli
-  Email addresses of group members:
+  Email addresses of group members: Aphillps2022@my.fit.edu, Thompsone2021@my.fit.edu
+									 ,fcahalan2022@my.fit.edu, tgingerelli2021@my.fit.edu
   Group name: FATE
 
   Course: CSE2010
   Section: 14
 
-  Description of the file:
+  Description of the file: Creates methods for processing two text files that are passed into the EvalQuerySidekick class 
+  Creates a RadixTree given an input file,  process new queries using the guess method and provide feedback and prepare class
+  for next query.
 */
 
 import java.util.Scanner;
@@ -17,11 +20,12 @@ import java.util.ArrayList;
 
 public class QuerySidekick
 {
+	// Variable declaration 
     String[] guesses = new String[5];  // 5 guesses from QuerySidekick
     int charIdx = 0;      // index/position of char in word of last node
     RadixTree radTree = new RadixTree();
     RadixTree.Node last = radTree.root;
-    String currWord = "";
+    StringBuilder currWord = new StringBuilder();
     RadixTree pastGuesses = new RadixTree();
     int lines = 0;
 
@@ -30,11 +34,12 @@ public class QuerySidekick
 
     // processes old queries from oldQueryFile
     public void processOldQueries(String oldQueryFile) throws FileNotFoundException{
-      File readThis = new File(oldQueryFile);
-      Scanner reader = new Scanner(readThis);
+      // Create Scanner object and uses a while loop to read entire file 
+      Scanner reader = new Scanner(new File(oldQueryFile));
       while (reader.hasNextLine()) {
          radTree.addWord(radTree.root, reader.nextLine().replaceAll("\\s+", " ").toLowerCase(), 1);
       }
+      // Run garbage collection and closes the scanner 
       System.gc();
       reader.close();
     }
@@ -44,8 +49,10 @@ public class QuerySidekick
     // currChar: current character typed in by the user
     // currCharPosition: position of the current character in the query, starts from 0
     public String[] guess(char currChar, int currCharPosition){
-        currWord = currWord + currChar;
-        // Returns node with currChar given the node with the last char. This may be the same node if last contains a word instead of a character
+    	// combines the current character to the currWord variable  
+        currWord.append(currChar);
+        // Returns node with currChar given the node with the last char. This may be the same node
+        // if last contains a word instead of a character
         RadixTree.Node temp = radTree.findNode(currChar, last, charIdx+ 1); 
         // if same node, increment charIdxto track which character in the word matches currChar
         if (temp == last) {
@@ -110,13 +117,15 @@ public class QuerySidekick
     // b.         false               null
     // c.         false               correct query
     public void feedback(boolean isCorrectGuess, String correctQuery){
+    	// Still guessing 
         if (!isCorrectGuess && correctQuery == null){
             // The Guesses For The Word Aren't Done But Aren't Right
         } 
         else {
+        	// Resets variables that are used after a line has either been guessed or failed to be guessed 
             charIdx= 0;
             last = radTree.root;
-            currWord = "";
+            currWord = new StringBuilder();
             pastGuesses = new RadixTree();
             lines++;
             if (lines > 100) {
