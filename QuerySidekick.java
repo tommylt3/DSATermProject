@@ -1,4 +1,3 @@
-<<<<<<< HEAD:QuerySidekick.java
 /*
   Authors (group members): Austin Phillips, Evan Thompson, Fiona Cahalan, and Tommy Gingerelli
   Email addresses of group members: Aphillps2022@my.fit.edu, Thompsone2021@my.fit.edu
@@ -9,7 +8,7 @@
   Section: 14
 
   Description of the file: Creates methods for processing two text files that are passed into the EvalQuerySidekick class 
-  Creates a RadixTree given an input file,  process new queries using the guess method and provide feedback and prepare class
+  Creates a RadixTree given an input file,  process new queries using the guess method and provide feedback and prepares class
   for next query.
 */
 

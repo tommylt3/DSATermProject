@@ -1,4 +1,3 @@
-<<<<<<< HEAD:RadixTree.java
 /*
   Authors (group members): Austin Phillips, Evan Thompson, Fiona Cahalan, and Tommy Gingerelli
   Email addresses of group members: fcahalan2022@my.fit.edu, Thompsone2021@my.fit.edu
@@ -7,6 +6,8 @@
 
   Course: CSE2010
   Section: 14
+
+  Description of the file: Radix tree/compressed trie for words/queries. The radix tree also stores old guesses.
 */
 
 import java.util.ArrayDeque;
