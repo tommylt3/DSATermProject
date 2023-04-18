@@ -22,4 +22,4 @@ Ideas for optimization
       - Implement RadixTree into Trie Tree 
       
       - Store the strings by using byte arrays or storing an index/offset into an array containing all possible words to save memory
-      - 
+      - During preproccessing take all permutations of the phrase and add this to the radix 
