@@ -12,6 +12,14 @@
   for next query.
 */
 
+/*
+ TODO Per Member
+ * @EvanThompson23: 
+ * @FionaCahalan: Relax
+ * @Gurtygurt98: Presentation
+ * @tommylt3: Feedback method, System Optimizations (Thread Work)
+ */
+
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;

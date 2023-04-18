@@ -8,8 +8,8 @@ import java.lang.management.*;
 public class testSystem {
    public static void main(String[] args) throws IOException {
 
-      String newFile = "src/data/florida_beachQueriesNew.txt";
-      String oldFile = "src/data/florida_beachQueriesOld.txt";
+      String newFile = "florida_beachQueriesNew.txt";
+      String oldFile = "florida_beachQueriesOld.txt";
    
       // for getting cpu time
       ThreadMXBean bean = ManagementFactory.getThreadMXBean();        
