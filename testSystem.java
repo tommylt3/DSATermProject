@@ -1,13 +1,17 @@
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Scanner;
 import java.util.List;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.text.DecimalFormat;
 import java.lang.management.*;
 
 public class testSystem {
    public static void main(String[] args) throws IOException {
 
+      PrintStream o = new PrintStream(new FileOutputStream("results.txt", true));
+      System.setOut(o);
       String newFile = "florida_beachQueriesNew.txt";
       String oldFile = "florida_beachQueriesOld.txt";
    
@@ -132,6 +136,7 @@ public class testSystem {
            System.out.println("Used memory in bytes: " + df.format((double)memory));
            //OverAll Score
            System.out.printf("Overall Score: %.4f\n",accuracy*accuracy/Math.sqrt(avgTime * memory));
+           System.out.println();
    
       QuerySidekick qs2 = qs;  // keep qs used to avoid garbage collection of qs
       qs2.equals(qs);
