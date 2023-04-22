@@ -35,7 +35,6 @@ public class RadixTree {
     Node root = new Node ("", 0, new Node[arraySize]);  // root of radix tree, holds empty string
     RadixTree () {} // constructor for radix tree
 
-
     // given a character, calculates corresponding index in children[] in a Node
     public static int calcIndex (char c) {
         int index = c;
