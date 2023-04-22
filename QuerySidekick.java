@@ -42,14 +42,19 @@ public class QuerySidekick
 
     // processes old queries from oldQueryFile
     public void processOldQueries(String oldQueryFile) throws FileNotFoundException{
-      // Create Scanner object and uses a while loop to read entire file 
-      Scanner reader = new Scanner(new File(oldQueryFile));
-      while (reader.hasNextLine()) {
-         radTree.addWord(radTree.root, reader.nextLine().replaceAll("\\s+", " ").toLowerCase(), 1);
-      }
-      // Run garbage collection and closes the scanner 
-      System.gc();
-      reader.close();
+        // Create Scanner object and uses a while loop to read entire file 
+        Scanner reader = new Scanner(new File(oldQueryFile));
+        while (reader.hasNextLine()) {
+            radTree.addWord(radTree.root, reader.nextLine().replaceAll("\\s+", " ").toLowerCase(), 1);
+            lines++;
+            if (lines > 250) {
+                lines = 0;
+                System.gc();
+            }
+        }
+        // Run garbage collection and closes the scanner 
+        System.gc();
+        reader.close();
     }
 
 
@@ -136,7 +141,7 @@ public class QuerySidekick
             currWord = new StringBuilder();
             pastGuesses = new RadixTree();
             lines++;
-            if (lines > 100) {
+            if (lines > 250) {
                 lines = 0;
                 System.gc();
             }
