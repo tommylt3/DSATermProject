@@ -44,7 +44,31 @@ public class RadixTree {
         else            
             return index - 32;
     }
+
     
+    public void deleteLowFreq() {
+        deleteLowFreq(root);
+    }
+
+    public boolean deleteLowFreq(Node current) {
+        if (current != null) {
+            int numChild = 0;
+            for (int i = 0; i < current.children.length; i++) {
+                if (current.children[i] != null) {
+                    if (deleteLowFreq(current.children[i]))
+                        current.children[i] = null;
+                    else
+                        numChild++;
+                }
+            }
+            if (numChild == 0 & current.freq < 2) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+
     // add word without calling the root 
     public void addWord(String word, int freq) {
        this.addWord(root, word, freq);

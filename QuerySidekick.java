@@ -47,16 +47,16 @@ public class QuerySidekick
         while (reader.hasNextLine()) {
             radTree.addWord(radTree.root, reader.nextLine().replaceAll("\\s+", " ").toLowerCase(), 1);
             lines++;
-            if (lines > 250) {
+            if (lines > 1) {
                 lines = 0;
                 System.gc();
             }
         }
+        radTree.deleteLowFreq();
         // Run garbage collection and closes the scanner 
         System.gc();
         reader.close();
     }
-
 
     // based on a character typed in by the user, return 5 query guesses in an array
     // currChar: current character typed in by the user
