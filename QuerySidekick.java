@@ -141,10 +141,12 @@ public class QuerySidekick
             currWord = new StringBuilder();
             pastGuesses = new RadixTree();
             lines++;
+            
             if (lines > 250) {
                 lines = 0;
                 System.gc();
             }
+            
         }
     }
 }
