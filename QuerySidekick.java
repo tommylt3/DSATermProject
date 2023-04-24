@@ -24,7 +24,7 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
+import java.util.HashMap;
 
 public class QuerySidekick
 {
@@ -34,7 +34,7 @@ public class QuerySidekick
     RadixTree radTree = new RadixTree();
     RadixTree.Node last = radTree.root;
     StringBuilder currWord = new StringBuilder();
-    RadixTree pastGuesses = new RadixTree();
+    HashMap<String, String> pastGuesses = new HashMap<String, String>();
     int lines = 0;
 
     // initialization of ...
@@ -46,11 +46,7 @@ public class QuerySidekick
         Scanner reader = new Scanner(new File(oldQueryFile));
         while (reader.hasNextLine()) {
             radTree.addWord(radTree.root, reader.nextLine().replaceAll("\\s+", " ").toLowerCase(), 1);
-            lines++;
-            if (lines > 1) {
-                lines = 0;
-                System.gc();
-            }
+            System.gc();
         }
         radTree.deleteLowFreq();
         // Run garbage collection and closes the scanner 
@@ -81,7 +77,7 @@ public class QuerySidekick
             // store guesses in past guesses radix tree
             for (int j = 0; j < guesses.length; j++) {
                 if (guesses[j].length() > 0)
-                    pastGuesses.addWord(guesses[j], 1);
+                    pastGuesses.put(guesses[j], guesses[j]);
             }
         } else {        // else generate guesses and save them
             guesses = new String[5];
@@ -95,9 +91,9 @@ public class QuerySidekick
                     j++;
                 } else {
                     // if guess has not been made before, use as guess
-                    if (!pastGuesses.isWordInTree(thePossibleWords.get(k).word)) {
+                    if (pastGuesses.get(thePossibleWords.get(k).word) == null) {
                         guesses[j] = thePossibleWords.get(k).word;
-                        pastGuesses.addWord(thePossibleWords.get(k).word, 1);
+                        pastGuesses.put(guesses[j], guesses[j]);
                         k++;
                         j++;
                     } else {
@@ -139,7 +135,7 @@ public class QuerySidekick
             charIdx= 0;
             last = radTree.root;
             currWord = new StringBuilder();
-            pastGuesses = new RadixTree();
+            pastGuesses = new HashMap<String, String>();
             lines++;
             
             if (lines > 250) {

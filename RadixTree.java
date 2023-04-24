@@ -10,6 +10,13 @@
   Description of the file: Radix tree/compressed trie for words/queries. The radix tree also stores old guesses.
 */
 
+/*
+Don't create old guesses array until necessary
+don't create children array until necessary
+use hashmap to store previous guesses
+*/
+
+
 import java.util.ArrayDeque; 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -43,7 +50,6 @@ public class RadixTree {
         else            
             return index - 32;
     }
-
     
     public void deleteLowFreq() {
         deleteLowFreq(root);
@@ -133,22 +139,11 @@ public class RadixTree {
         while (i < word.length() && current.children[calcIndex(word.charAt(i))] != null) {
             current = current.children[calcIndex(word.charAt(i))];
             
-            /*
-            int j = 0;
-            while (i < word.length() && j < current.word.length() && word.charAt(i) == current.word.charAt(j)){
-                i++;
-                j++;
-            }
-            if (i < current.word.length()) return false;
-            */
-
-            // System.out.printf("test %s i: %d boolean: %b ", current.word, i, current.word.length() <= word.length() - i );
             if (current.word.length() <= word.length() - i && current.word.equals(word.substring(i, current.word.length() + i))) {
                 i += current.word.length();
             } else {
                 return false;
             }
-            
             
         }
         if (i >= word.length()) 
