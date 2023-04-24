@@ -3,11 +3,12 @@
 public class TesterRadix {
     public static void main (String args[]) {
         RadixTree tester = new RadixTree();
-        tester.addWord(tester.root, "freebe", 5);
-        tester.addWord(tester.root, "fire", 8);
-        tester.addWord(tester.root, "fire", 8);
-        tester.addWord(tester.root, "freedom", 7);
-        tester.addWord(tester.root, "lucky", 4);
+        tester.addWord("freebe", 1);
+        tester.addWord("fire", 2);
+        tester.addWord("fire", 3);
+        tester.addWord("freedom", 1);
+        tester.addWord("lucky", 1);
+        tester.deleteLowFreq();
         tester.printTree();
 
 
@@ -15,6 +16,8 @@ public class TesterRadix {
         char[] fr = {'f', 'i'};
         RadixTree.Node last = tester.root;
         
+        
+        /*
         int i = 0;
         for (int j = 0; j < fr.length; j++) {
             RadixTree.Node temp = tester.findNode(fr[j], last, i);
@@ -30,7 +33,7 @@ public class TesterRadix {
             for (int k = 0; k < answers.length; k++) {
                 System.out.println(answers[k]);
             }
-        }
+        }*/
 
         /*
         cases to consider:
