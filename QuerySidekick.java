@@ -12,14 +12,6 @@
   for next query.
 */
 
-/*
- TODO Per Member
- * @EvanThompson23: 
- * @FionaCahalan: Relax
- * @Gurtygurt98: Presentation
- * @tommylt3: Feedback method, System Optimizations (Thread Work)
- */
-
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,6 +38,8 @@ public class QuerySidekick
         Scanner reader = new Scanner(new File(oldQueryFile));
         while (reader.hasNextLine()) {
             radTree.addWord(radTree.root, reader.nextLine().replaceAll("\\s+", " ").toLowerCase(), 1);
+            
+            // every 25 entries into the radix tree, call garbage collector
             lines++;
             if (lines > 25) {
                 System.gc();
@@ -58,9 +52,11 @@ public class QuerySidekick
         reader.close();
     }
 
-    // based on a character typed in by the user, return 5 query guesses in an array
-    // currChar: current character typed in by the user
-    // currCharPosition: position of the current character in the query, starts from 0
+    /* 
+    based on a character typed in by the user, return 5 query guesses in an array
+    currChar: current character typed in by the user
+    currCharPosition: position of the current character in the query, starts from 0 
+    */
     public String[] guess(char currChar, int currCharPosition){
     	// combines the current character to the currWord variable  
         currWord.append(currChar);
@@ -144,6 +140,7 @@ public class QuerySidekick
             pastGuesses = new HashMap<String, String>();
             lines++;
             
+            // calls the garbage collector after every 250 queries
             if (lines > 250) {
                 lines = 0;
                 System.gc();

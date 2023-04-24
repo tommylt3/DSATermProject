@@ -7,7 +7,7 @@
   Course: CSE2010
   Section: 14
 
-  Description of the file: Radix tree/compressed trie for words/queries. The radix tree also stores old guesses.
+  Description of the file: Radix tree/compressed trie for words/queries.
 */
 
 import java.util.ArrayDeque; 
@@ -35,7 +35,7 @@ public class RadixTree {
         }
     }
 
-    static int ARRAY_SIZE = 68;      // size of children[] in Node
+    static int ARRAY_SIZE = 68;      // size of children[] in Node, excludes non-printing ASCII characters and upper case letters
     Node root = new Node ("", 0, new Node[ARRAY_SIZE]);  // root of radix tree, holds empty string
     RadixTree () {} // constructor for radix tree
 
@@ -48,11 +48,11 @@ public class RadixTree {
             return index - 32;
     }
 
-    
     public void deleteLowFreq() {
         deleteLowFreq(root);
     }
 
+    // Deletes any words with a frequency of 1
     public boolean deleteLowFreq(Node current) {
         if (current != null) {
             int numChild = 0;
@@ -128,25 +128,6 @@ public class RadixTree {
                 addWord (current, subword.substring(i, subword.length()), freq);  // call function on substring, exlcuding portion of string that current holds
             }
         }
-    }
-
-    /* determines if the given word is in the Radix tree */
-    public boolean isWordInTree (String word) {
-        Node current = root;
-        int i = 0;
-        while (i < word.length() && current.children[calcIndex(word.charAt(i))] != null) {
-            current = current.children[calcIndex(word.charAt(i))];
-            
-            if (current.word.length() <= word.length() - i && current.word.equals(word.substring(i, current.word.length() + i))) {
-                i += current.word.length();
-            } else {
-                return false;
-            }
-            
-        }
-        if (i >= word.length()) 
-            return true;
-        return false;
     }
 
     /* given a parent node and a character, returns node stored in spot corresponding to the character */
