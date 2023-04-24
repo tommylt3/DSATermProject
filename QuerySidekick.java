@@ -46,7 +46,11 @@ public class QuerySidekick
         Scanner reader = new Scanner(new File(oldQueryFile));
         while (reader.hasNextLine()) {
             radTree.addWord(radTree.root, reader.nextLine().replaceAll("\\s+", " ").toLowerCase(), 1);
-            System.gc();
+            lines++;
+            if (lines > 25) {
+                System.gc();
+                lines = 0;
+            }
         }
         radTree.deleteLowFreq();
         // Run garbage collection and closes the scanner 
@@ -72,7 +76,7 @@ public class QuerySidekick
         last = temp;
 
         // if possible, use existing guesses
-        if (last != null && last.oldGuesses[charIdx] != null) {
+        if (last != null && last.oldGuesses != null && last.oldGuesses[charIdx] != null) {
             guesses = last.oldGuesses[charIdx];
             // store guesses in past guesses radix tree
             for (int j = 0; j < guesses.length; j++) {
@@ -104,6 +108,8 @@ public class QuerySidekick
             
             // store guesses to be made in node for reuse later
             if (last != null) {
+                if (last.oldGuesses == null)
+                    last.oldGuesses = new String[last.word.length()][];
                 last.oldGuesses[charIdx] = guesses;
             }      
             
