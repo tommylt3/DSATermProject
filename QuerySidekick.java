@@ -47,9 +47,9 @@ public class QuerySidekick
         while (reader.hasNextLine()) {
             radTree.addWord(radTree.root, reader.nextLine().replaceAll("\\s+", " ").toLowerCase(), 1);
             lines++;
-            if (lines > 1) {
-                lines = 0;
+            if (lines > 25) {
                 System.gc();
+                lines = 0;
             }
         }
         radTree.deleteLowFreq();
