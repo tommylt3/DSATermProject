@@ -57,8 +57,10 @@ public class RadixTree {
         if (current != null) {
             int numChild = 0;
             if (current.children != null) {
+                // for each child
                 for (int i = 0; i < current.children.length; i++) {
                     if (current.children[i] != null) {
+                        // if node should be deleted
                         if (deleteLowFreq(current.children[i]))
                             current.children[i] = null;
                         else
@@ -66,6 +68,7 @@ public class RadixTree {
                     }
                 }
             }
+            // if it has no children and freq = 1 or 0, delete node
             if (numChild == 0 & current.freq < 2) {
                 return true;
             }
