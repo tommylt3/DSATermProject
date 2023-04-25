@@ -48,8 +48,10 @@ public class QuerySidekick
         }
         radTree.deleteLowFreq();
         // Run garbage collection and closes the scanner 
+	// Running the garbage collector after closing the scanner results in a better score 
+	reader.close();
         System.gc();
-        reader.close();
+        
     }
 
     /* 
